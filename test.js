@@ -27,6 +27,13 @@ function getTestFiles() {
         });
     }
 
+    if (fs.existsSync(cwd + '/solution.rb')) {
+        files.push({
+            solution: 'solution.rb',
+            command: 'ruby'
+        });
+    }
+
     return files;
 }
 
