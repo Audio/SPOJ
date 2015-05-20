@@ -40,12 +40,14 @@ function getTestFiles() {
 var validators = {
     equal: function(input, output) {
         if (input.length !== output.length) {
-            throw Error('Input/output length mismatch');
+            throw Error('Input/output length mismatch (' + input.length +
+                        ' vs ' + output.length + ')');
         }
     },
     prefix: function(input, output) {
         if (input.length - 1 !== output.length) {
-            throw Error('Input/output length mismatch');
+            throw Error('Input/output length mismatch (' + input.length +
+                        ' vs ' + output.length + ')');
         }
         if (input.length - 1 !== Number(input[0])) {
             throw Error('Input length mismatch (expected ' + input[0] +
@@ -55,7 +57,8 @@ var validators = {
     },
     suffix: function(input, output) {
         if (input.length - 1 !== output.length) {
-            throw Error('Input/output length mismatch');
+            throw Error('Input/output length mismatch (' + input.length +
+                        ' vs ' + output.length + ')');
         }
         if (input[input.length - 1] !== '0') {
             throw Error('The last input line must be zero (0)');
