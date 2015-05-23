@@ -89,6 +89,8 @@ module.exports = function(opts) {
     }
 
     var files = getTestFiles();
+    if (!files.length) throw Error('No solutions found');
+
     for (var f = 0; f < files.length; ++f) {
         var suiteTitle = cwd.split('/').reverse()[0] + ' - ' + files[f].solution;
         describe(suiteTitle, function() {
