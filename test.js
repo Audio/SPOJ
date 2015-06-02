@@ -1,9 +1,8 @@
 var assert = require('assert');
-var cwd = process.cwd();
-var fs = require('fs');
 var exec = require('child_process').exec;
+var fs = require('fs');
 
-function getTestFiles() {
+function getTestFiles(cwd) {
     var files = [];
 
     if (fs.existsSync(cwd + '/solution.go')) {
@@ -74,9 +73,15 @@ module.exports = function(opts) {
     opts.validator = opts.validator || 'equal';
     opts.separator = opts.separator || "\n";
 
+    var cwd = process.cwd();
+
     // load and parse io files
     function separate(lines) {
-        return lines.trim().split(opts.separator);
+        return lines
+                .trim()
+                .split(opts.separator)
+                .map(Function.prototype.call, String.prototype.trim)
+                .filter(Boolean);
     }
     var input  = separate( fs.readFileSync(cwd + '/input.txt',  {encoding: 'utf8'}) );
     var output = separate( fs.readFileSync(cwd + '/output.txt', {encoding: 'utf8'}) );
@@ -88,7 +93,7 @@ module.exports = function(opts) {
         validators[opts.validator](input, output);
     }
 
-    var files = getTestFiles();
+    var files = getTestFiles(cwd);
     if (!files.length) throw Error('No solutions found');
 
     for (var f = 0; f < files.length; ++f) {
@@ -97,10 +102,11 @@ module.exports = function(opts) {
 
             // run solution app
             var results,
+                opts = {cwd: cwd},
                 command = files[f].command + ' ' + files[f].solution + ' < input.txt';
 
             before(function(done) {
-                exec(command, function(e, out, err) {
+                exec(command, opts, function(e, out, err) {
                     if (e) return done(e);
                     if (err) return done(err);
                     results = separate(out);
