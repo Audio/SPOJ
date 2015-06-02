@@ -66,6 +66,10 @@ var validators = {
     }
 };
 
+function oneLiner(str) {
+    return str.replace(/\n/g, " \\n ");
+}
+
 module.exports = function(opts) {
 
     // default values
@@ -80,7 +84,9 @@ module.exports = function(opts) {
         return lines
                 .trim()
                 .split(opts.separator)
-                .map(Function.prototype.call, String.prototype.trim)
+                .map(function(item) {
+                    return oneLiner((item || '').trim());
+                })
                 .filter(Boolean);
     }
     var input  = separate( fs.readFileSync(cwd + '/input.txt',  {encoding: 'utf8'}) );
