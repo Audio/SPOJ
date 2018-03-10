@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TESTS=1
-WORDS=1000
-WORD_LENGTH=2
+TESTS=5
+WORDS=100000
+WORD_LENGTH=4
 
 random-string () {
     s=abcdefghijklmnopqrstuvwxyz
